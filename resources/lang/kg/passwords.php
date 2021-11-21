@@ -13,10 +13,10 @@ return [
     |
     */
 
-    'reset' => 'Your password has been reset!',
-    'sent' => 'We have emailed your password reset link!',
-    'throttled' => 'Please wait before retrying.',
-    'token' => 'This password reset token is invalid.',
-    'user' => "We can't find a user with that email address.",
+    'reset' => 'Сырсөзүңүз баштапкы абалга келтирилди!',
+    'sent' => 'Сырсөздү баштапкы абалга келтирүү шилтемесин электрондук почта аркылуу жибердик!',
+    'throttled' => 'Сураныч, дагы бир жолу аракет кылып күтө туруңуз.',
+    'token' => 'Бул сырсөздү өзгөртүү белгиси жараксыз.',
+    'user' => "Ошул электрондук почталуу дареги бар колдонуучуну таба албай жатабыз.",
 
 ];

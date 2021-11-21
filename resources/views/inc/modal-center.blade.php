@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
                 {{ $modal_description ?? 'Modal description. Its empty form. please control your page' }}
-                    <p class="font-weight-bold">
+                    <p class="font-weight-bold pt-4">
                         {{ $modal_question ?? '' }}
                     </p>
             </div>

@@ -1,17 +1,14 @@
-@extends('layouts.app')
-@section('content')
+@extends('admin.admin-layout')
+@section('admin-content')
     <div class="row">
         <div class="col-10 offset-1 mb-4 text-center">
             <h4>
-                {{ __('form.edit_page_info_title') }}
+                {{__('form.edit_page_info_title') }}
             </h4>
-            <p class="font-weight-light">
-                {{ __('form.edit_page_info_description') }}
-            </p>
         </div>
         <form action="{{ route('category.update',$category->id) }}" method="post" class="col-8 offset-2">
             @method('PUT')
-            @include('category.form-category',[
+            @include('admin.category.form-category',[
                 'title'=> __('category.title'),
                 'title_value' => isset($category->title)?$category->title:old('title'),
                 'title_description' => __('category.input_category_description'),

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="row">
-        <div class="col-4 offset-4">
+        <div class="col-6 offset-2 align-content-center">
             <p class="h5">
                 {{ __('user.name') }} :
                 {{$user->name}}

@@ -34,8 +34,19 @@
         </div>
         <div class="col-lg-6 row">
             <label for="price" class="col-4 text-left">{{$price}}</label>
-            <input type="text" class="form-control col-8" placeholder="{{ $price_input_placeholder }}" id="price"
-                   name="price" value="{{isset($work->price) ? $work->price: old('price')}}">
+{{--            <div class="btn-group col-4 overflow-hidden">--}}
+{{--                <li class="d-inline-block col-12">first</li>--}}
+{{--                <li class="d-inline-block col-12">second</li>--}}
+{{--                <li class="d-inline-block col-12">thirth</li>--}}
+{{--            </div>--}}
+            <input type="text" class="form-control col-4" placeholder="{{ $price_input_placeholder }}" id="price"
+                   name="price" list="prices" value="{{isset($work->price) ? $work->price: old('price')}}" autocomplete="off">
+            <datalist id="prices" class="col-4">
+                <option value="Келишим түрдө">
+                <option value="1000 cом">
+                <option value="2000 cом">
+                <option value="3000 cом">
+            </datalist>
         </div>
         <input type="number" class="d-none" value="{{ Auth::user()->id }}" id="user_id" name="user_id">
     </div>

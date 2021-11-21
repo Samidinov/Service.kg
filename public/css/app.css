@@ -78,7 +78,6 @@ body {
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: 0 !important;
 }
-
 hr {
   box-sizing: content-box;
   height: 0;
@@ -13958,3 +13957,10 @@ a.text-dark:focus {
 .cursor-pointer {
     cursor: pointer;
 }
+.main-menu {
+    z-index: 10000;
+}
+.main-content {
+    padding-top: 10px;
+}
+

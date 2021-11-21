@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Service\CategoryService;
 use App\Models\Category;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -22,8 +25,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = $this->categoryService->getCategories();
-        return view('category.index', ['categories' => $categories]);
+            $categories = $this->categoryService->getCategories();
+            return view('admin.category.index', ['categories' => $categories]);
     }
 
     /**
@@ -33,7 +36,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('category.create');
+            return view('admin.category.create');
     }
 
     /**
@@ -45,12 +48,11 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $this->categoryService->store($request);
-        /* if ($request->paren_id === 0) {
-             return $this->index();
-        } else {
-            return $this->edit($this->categoryService->findCategory($request->parent_id));
-        }*/
-        return $this->index();
+        if ($request->parent_id){
+            return view('admin.category.edit', ['category' => $this->categoryService->findCategory($request->parent_id)])
+                ->with('subcategories', $this->categoryService->findSubcategories($request->parent_id));
+        }
+            return $this->index();
     }
 
     /**
@@ -72,8 +74,9 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('category.edit',['category' => $category])
-             ->with('subcategories' , $this->categoryService->findSubcategories($category->id));
+            return view('admin.category.edit', ['category' => $category])
+                ->with('subcategories', $this->categoryService->findSubcategories($category->id));
+
     }
 
     /**
@@ -85,8 +88,8 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->categoryService->update($request, $id);
-        return $this->edit($this->categoryService->findCategory($id));
+            $this->categoryService->update($request, $id);
+            return $this->edit($this->categoryService->findCategory($id));
     }
 
     /**

@@ -27,7 +27,12 @@
                         const user_id = <?php echo json_encode(\Illuminate\Support\Facades\Auth::id()) ?>;
                         const toSave = document.querySelector(".add-to-saved-list");
 
-                            $.ajax({
+
+                        const btnSuggest = document.querySelector('.btn-suggest');
+                        let master_id = <?php echo json_encode(\Illuminate\Support\Facades\Auth::id())?>;
+                        let client_id = <?php echo json_encode($user->id)?>;
+
+                        $.ajax({
                                 type:'POST',
                                 url:"{{ route('isMyAd') }}",
                                 data:{
@@ -43,9 +48,33 @@
                                 error : function(req, err) {
                                     alert: ("Request:"+ JSON.stringify(req));
                                 }});
+                        $.ajax({
+                            type:'POST',
+                            url:"{{ route('work.isMasterSendSuggestToContract') }}",
+                            data:{
+                                master_id : master_id,
+                                client_id : client_id,
+                                ad_id : work_id,
+                            },
+                            success : function(data) {
+                                if (data.result === true) {
+                                    btnSuggest.classList.remove('btn-success');
+                                    btnSuggest.classList.add('btn-danger');
+                                    btnSuggest.innerHTML =
+                                        "<?php echo __('work.btn_suggested_contract_title')?>
+                                            <i class='ml-2 fa fa-hand-paper-o'></i>"
+                                }
+                                else if (data.result === false) {
+                                    // btnSuggest.classList.remove('btn-danger');
+                                    // btnSuggest.classList.add('btn-success');
+                                }
+                            },
+                            error : function(req, err) {
+                                alert: ("Request:"+ JSON.stringify(req));
+                                console.log('error in ajax');
+                            }});
 
-
-                    const changeBookmarkStyle = (isMy = false) => {
+                        const changeBookmarkStyle = (isMy = false) => {
 
                         let work_id = <?php echo json_encode($work->id) ?>;
                         let user_id = <?php echo json_encode(\Illuminate\Support\Facades\Auth::id()) ?>;
@@ -84,7 +113,7 @@
                             });
                         }
                     }
-                    toSave.addEventListener('click', (e) => {
+                        toSave.addEventListener('click', (e) => {
                         e.preventDefault();
                         $.ajaxSetup({
                             headers: {
@@ -99,6 +128,72 @@
                         }
                     })
 
+                        const changeSuggestBtnStyle = (suggestSended = false) => {
+
+                            let master_id = <?php echo json_encode(\Illuminate\Support\Facades\Auth::id())?>;
+                            let client_id = <?php echo json_encode($user->id)?>;
+                            let work_id = <?php echo json_encode($work->id)?>;
+
+                            if (suggestSended) {
+                                btnSuggest.classList.remove('btn-danger');
+                                btnSuggest.classList.add('btn-success');
+                                btnSuggest.innerHTML =
+                                    "<?php echo __('work.btn_suggest_contract_title')?>
+                                        <i class='ml-2 fa fa-hand-o-right'></i>"
+
+
+                                $.ajax({
+                                    type:'POST',
+                                    url:"{{ route('work.masterSuggestContractToClient') }}",
+                                    data:{
+                                        master_id : master_id,
+                                        client_id : client_id,
+                                        ad_id : work_id,
+                                        action: 'remove',
+                                    },
+                                    success : function (data) {
+                                        console.log('remove part');
+                                    }
+                                });
+
+                            } else {
+
+                                btnSuggest.classList.remove('btn-success');
+                                btnSuggest.classList.add('btn-danger');
+                                btnSuggest.innerHTML =
+                                    "<?php echo __('work.btn_suggested_contract_title')?>
+                                        <i class='ml-2 fa fa-hand-paper-o'></i>"
+                                console.log('btn-danger');
+
+                                $.ajax({
+                                    type:'POST',
+                                    url:"{{ route('work.masterSuggestContractToClient') }}",
+                                    data:{
+                                        master_id : master_id,
+                                        client_id : client_id,
+                                        ad_id : work_id,
+                                        action: 'add',
+                                    },
+                                    success : function (data) {
+                                        console.log('add part');
+                                    }
+                                });
+                            }
+                        }
+                        btnSuggest.addEventListener('click', function (e) {
+                            e.preventDefault();
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+                            if (btnSuggest.classList.contains('btn-danger')) {
+                                changeSuggestBtnStyle(true);
+                            } else {
+                                changeSuggestBtnStyle(false);
+                            }
+                        })
+
                     })
                 </script>
             </div>
@@ -108,12 +203,14 @@
             <div class="col-4"><i class="fa fa-phone"> </i> {{ $work->contacts }}</div>
             <div class="col-4"><i class="text-success fa fa-map-pin mr-2"></i> {{ $work->address }}</div>
             <div class="col-12 row">
+                @if($user->id !== \Illuminate\Support\Facades\Auth::id())
                 <div class="col-4 offset-8">
-                    <a class="btn btn-success col-12 ">
-                        {{ __('work.btn_give_feedback') }}
-                        <i class="ml-2 fa fa-comment"></i>
+                    <a class="btn btn-success col-12 btn-suggest">
+                        {{ __('work.btn_suggest_contract_title') }}
+                        <i class="ml-2 fa fa-hand-o-right"></i>
                     </a>
                 </div>
+                    @endif
             </div>
         </div>
     </div>
@@ -140,12 +237,4 @@
         </div>
     @endif
 @endsection
-@push('scripts')
-    <script>
-        const toSave = document.querySelector(".add-to-saved-list");
-        toSave.addEventListener('click', (e) => {
-            e.preventDefault();
-            console.log('hello js');
-        })
-    </script>
-@endpush
+

@@ -24,11 +24,13 @@ class MasterController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return|
      */
     public function index()
     {
-        //
+       return view('master.index', [
+           'masters' => $this->masterService->getAllMasters()
+       ]);
     }
 
     /**
@@ -117,5 +119,17 @@ class MasterController extends Controller
     public function destroy(Master $master)
     {
         dd('destroy master'.$master);
+    }
+
+    public function mastersList() {
+        return view('master.masters-list', [
+            'mastersList' => $this->masterService->getAllMasters()
+        ]);
+    }
+
+    public function masterContracts ($master_id) {
+        return view('master.contracts-index', [
+            'contracts' => $this->masterService->getContractsByMasterId($master_id)
+        ]);
     }
 }

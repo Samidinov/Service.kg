@@ -1,5 +1,5 @@
-@extends('layouts.app')
-@section('content')
+@extends('admin.admin-layout')
+@section('admin-content')
     <div class=" col-10 offset-1">
         <table class="table">
             <thead class="thead-dark">

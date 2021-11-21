@@ -17,8 +17,9 @@
 
                     @include('inc.modal-center', [
                             'id'=>$work->id,
-                            'modal_title'=>'ochurruu',
-                            'modal_description_question'=> 'ochuruugo makulsuzbu',
+                            'modal_title'=>'Жарыяңызды өчүрүү',
+                            'modal_description' => $work->title,
+                            'modal_question'=> 'Бул жарыяңызды өчүрүгө макулсузбу?',
                             'modal_btn_disagree' => 'Артка кайт',
                             'route' => route('work.destroy', $work->id),
                             'modal_btn_agree' => 'Өчүрүүгө макулмун'

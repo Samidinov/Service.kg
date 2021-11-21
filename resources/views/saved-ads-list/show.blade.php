@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
-    <div class="row">
+    <div class="row text-center">
+        <h4 class="col-4 offset-4 mt-5 mb-5">{{__('user.saved_messages_page_title')}}</h4>
         </div>
         <div class="col-12 row">
             <div class="col-8 offset-2 row">

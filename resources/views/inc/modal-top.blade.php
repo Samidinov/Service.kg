@@ -15,7 +15,7 @@
                 @csrf
 
                 <div class="modal-body">
-                    @include('category.form-subcategory')
+                    @include('admin.category.form-subcategory')
                 </div>
 
                 <div class="modal-footer">

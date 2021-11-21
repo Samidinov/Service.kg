@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    private $UserService;
+    private $userService;
     private $masterService;
-    public function __construct(UserService $UserService , MasterService  $masterService){
-        $this->UserService = $UserService;
+    public function __construct(UserService $userService , MasterService  $masterService){
+        $this->userService = $userService;
         $this->masterService = $masterService;
     }
 
@@ -55,7 +55,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = $this->UserService->show($id);
+        $user = $this->userService->show($id);
         return view('user.show',['user'=>$user]);
     }
 
@@ -67,7 +67,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = $this->UserService->show($id);
+        $user = $this->userService->show($id);
         return view('user.edit',[
                                         'user'=>$user,
                                         'master' => $this->masterService->find($user->id),
@@ -83,7 +83,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->UserService->update($request,$id);
+        $this->userService->update($request,$id);
         return $this->show($id);
     }
 
@@ -95,25 +95,33 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $this->UserService->destroy($id);
+        $this->userService->destroy($id);
         return redirect(route('work.index'));
     }
 
     public function userAds (Request $request) {
         $input = $request->all();
         if ($input['action'] ==='add') {
-            return $this->UserService->addToUsersSavedWorkAdList ($input['user_id'], $input['ad_id'], 'WORK');
+            return $this->userService->addToUsersSavedWorkAdList ($input['user_id'], $input['ad_id'], 'WORK');
         }
         elseif ($input['action'] === 'remove') {
-            return $this->UserService->removeFromUsersSavedWorkAdList ($input['user_id'], $input['ad_id'], 'WORK');
+            return $this->userService->removeFromUsersSavedWorkAdList ($input['user_id'], $input['ad_id'], 'WORK');
         }
     }
 
     public function isMyAd(Request $request) {
         $input = $request->all();
-        $result = $this->UserService->checkMapping($input['user_id'], $input['ad_id'], 'WORK');
+        $result = $this->userService->checkMapping($input['user_id'], $input['ad_id'], 'WORK');
         return ['result'=>$result];
     }
 
+    public function getAllUsers() {
+        $usersList = $this->userService->getAllUsers();
+
+        return view('admin.users.users-list', [
+            'users' => $usersList,
+        ]);
+
+    }
 
 }

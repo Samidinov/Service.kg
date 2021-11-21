@@ -25,7 +25,10 @@ return [
     'edit_page_edit_icon_hover' =>'Жарыяны өзгөртүү',
     'default_value_time_to_work' =>'Белгисиз',
     'btn_give_feedback' =>'Баарлашуу',
-    '' =>'',
-]
+    'btn_suggest_contract_title' =>'Сунуш жөнөтүү',
+    'btn_suggested_contract_title' => 'Сунуш жөнөтүлдү',
+    '' => '',
+    '' => '',
+    ]
 
 ?>
